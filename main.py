@@ -1,8 +1,10 @@
 from flask import Flask, request
 from transformers import pipeline
 import json
-import torch
 
+# import torch
+
+app = Flask(__name__)
 
 sentiment_analysis = pipeline("sentiment-analysis", model='rabindralamsal/BERTsent')
 """
@@ -19,12 +21,10 @@ print(res3)
 """
 
 
-app = Flask(__name__)
-
-@app.route('/home', methods=['GET'])
+@app.route('/', methods=['GET'])
 def home():
     print('hi')
-    #return jsonify(message=str("index.html"))
+    # return jsonify(message=str("index.html"))
     language = "Python"
     company = "Oreivaton"
     Itemid = 1
@@ -41,7 +41,8 @@ def home():
     # Dictionary to JSON Object using dumps() method
     # Return JSON Object
     return json.dumps(value)
-    #return json.dump({'message': "index.html"})
+    # return json.dump({'message': "index.html"})
+
 
 @app.route("/detect_sentiment", methods=['POST'])
 def detect_sentiment():
@@ -53,10 +54,10 @@ def detect_sentiment():
     print(data["data_text"])
     res = sentiment_analysis(data["data_text"])
     return json.dumps(res[0])
-    #return json.dumps({"meg": data_text})
+    # return json.dumps({"meg": data_text})
 
 
 if __name__ == "__main__":
     from waitress import serve
 
-    serve(app, host="0.0.0.0", port=8080)
+    serve(app, host="0.0.0.0", port=8089)
